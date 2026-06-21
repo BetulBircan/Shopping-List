@@ -1,4 +1,36 @@
-
+const list = [
+  {
+    id : 1,
+    title : "Yumurta",
+    quantity : 10,
+    completed : true
+  },
+  {
+    id : 2,
+    title : "Ekmek",
+    quantity : 2,
+    completed : true
+  },
+  {
+    id : 3,
+    title : "Süt",
+    quantity : 1,
+    completed : false
+  },
+  {
+    id : 4,
+    title : "Et",
+    quantity : 1,
+    completed : true
+  },
+  {
+    id : 5,
+    title : "Zeytin",
+    quantity : 1,
+    completed : false
+  },
+ 
+]
 
 function App() {
 
@@ -24,9 +56,12 @@ function Form() {
     <form className="form">
       <input type="text" placeholder="Ürün adı giriniz" />
       <select >
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
+        {/* Birden 10 a kadar sayı üretir ama array from girilen string i elemaları parçalayarak diziye çevirir burda da 1 den 10 a kadar sayı sizisi üretiyor sonta da mapleyip yazdırıyoruz tek tek */}
+        {
+          Array.from({length:10},(v,i) => i + 1).map(num=>
+            <option value="{num}">{num}</option>
+          )
+        }
       </select>
       <button type="submit">Ekle</button>
     </form>
@@ -37,18 +72,16 @@ function List() {
   return (
     <div className="list">
       <ul>
-        <ListItem />
-        <ListItem />
-        <ListItem />
+        {list.map((listItem,index)=>( <ListItem listItem={listItem} key={index}/> ))}
       </ul>
     </div>
   )
 }
 
-function ListItem() {
+function ListItem({listItem}) {
   return (
     <li>
-      <span>Yumurta</span>
+      <span style={ listItem.completed ? {textDecoration : 'line-through'} : {textDecoration : 'none'} }> {listItem.quantity} {listItem.title}</span>
       <button>X</button>
     </li>
   )

@@ -29,6 +29,8 @@ export default [
       ...react.configs['jsx-runtime'].rules,
       ...reactHooks.configs.recommended.rules,
       'react/jsx-no-target-blank': 'off',
+      //Javascript kullandığım için ve eslintte hata verdiği için bu kodu kullandım. TypeScript kullanılacaksa bu kod eklenmez.
+      "react/prop-types": "off",
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true },
