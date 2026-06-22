@@ -1,0 +1,7 @@
+- Değişecek Bilgiler State ile Tanımlanır.
+- State güncellendiğind ecomponent tekrar render edilir.
+- Değişmeyecek sabit bilgiler const ile Tanımlanır.
+- Parent Component child componente props ile veri gönderir.
+- State kullanıldığı component içerisinde tanımlanırsa Local State olur.
+- Local State child component te kullanılacaksa props ile gönderilir.
+- State eğer kardeş(sbling) componentte kullanılacaksa parent component e taşınması gerekir. bu da global state tanımlamak demektir

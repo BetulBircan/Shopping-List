@@ -1,44 +1,51 @@
-const list = [
-  {
-    id : 1,
-    title : "Yumurta",
-    quantity : 10,
-    completed : true
-  },
-  {
-    id : 2,
-    title : "Ekmek",
-    quantity : 2,
-    completed : true
-  },
-  {
-    id : 3,
-    title : "Süt",
-    quantity : 1,
-    completed : false
-  },
-  {
-    id : 4,
-    title : "Et",
-    quantity : 1,
-    completed : true
-  },
-  {
-    id : 5,
-    title : "Zeytin",
-    quantity : 1,
-    completed : false
-  },
+import { useState } from "react"
+
+// const list = [
+//   {
+//     id : 1,
+//     title : "Yumurta",
+//     quantity : 10,
+//     completed : true
+//   },
+//   {
+//     id : 2,
+//     title : "Ekmek",
+//     quantity : 2,
+//     completed : true
+//   },
+//   {
+//     id : 3,
+//     title : "Süt",
+//     quantity : 1,
+//     completed : false
+//   },
+//   {
+//     id : 4,
+//     title : "Et",
+//     quantity : 1,
+//     completed : true
+//   },
+//   {
+//     id : 5,
+//     title : "Zeytin",
+//     quantity : 1,
+//     completed : false
+//   },
  
-]
+// ]
 
 function App() {
+
+  const [list, setList] = useState([])
+  function handleAddItem(listItem) {
+    setList((list) => [...list,listItem])
+  }
 
   return (
    <div className="app">
       <Header />
-      <Form />
-      <List />
+      <Form onAddListItem = {handleAddItem} />
+      <List list={list}/>
       <Summary />
    </div>
   )
@@ -51,15 +58,29 @@ function Header() {
 }
 
 //LİSTEYE ÜRÜN EKLEME/ SİLME
-function Form() {
+function Form({onAddListItem}) {
+  
+  const [title, setTitle] = useState("");
+  const [quantity, setQuantity] = useState(1);
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    const item = {id : Date.now(), title,quantity, completed : false}
+    console.log(item);
+    setTitle('');
+    setQuantity(1);
+    onAddListItem(item)
+    
+  }
+
   return (
-    <form className="form">
-      <input type="text" placeholder="Ürün adı giriniz" />
-      <select >
+    <form className="form" onSubmit={handleFormSubmit}>
+      <input type="text" placeholder="Ürün adı giriniz" value={title} onChange={(e) =>setTitle(e.target.value)}/>
+      <select value = {quantity} onChange={(e) => setQuantity(Number(e.target.value))}>
         {/* Birden 10 a kadar sayı üretir ama array from girilen string i elemaları parçalayarak diziye çevirir burda da 1 den 10 a kadar sayı sizisi üretiyor sonta da mapleyip yazdırıyoruz tek tek */}
         {
           Array.from({length:10},(v,i) => i + 1).map(num=>
-            <option value="{num}">{num}</option>
+            <option value={num} key={num}>{num}</option>
           )
         }
       </select>
@@ -68,7 +89,7 @@ function Form() {
   )
 }
 
-function List() {
+function List({list}) {
   return (
     <div className="list">
       <ul>
