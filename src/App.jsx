@@ -1,51 +1,56 @@
 import { useState } from "react"
 
-// const list = [
-//   {
-//     id : 1,
-//     title : "Yumurta",
-//     quantity : 10,
-//     completed : true
-//   },
-//   {
-//     id : 2,
-//     title : "Ekmek",
-//     quantity : 2,
-//     completed : true
-//   },
-//   {
-//     id : 3,
-//     title : "Süt",
-//     quantity : 1,
-//     completed : false
-//   },
-//   {
-//     id : 4,
-//     title : "Et",
-//     quantity : 1,
-//     completed : true
-//   },
-//   {
-//     id : 5,
-//     title : "Zeytin",
-//     quantity : 1,
-//     completed : false
-//   },
- 
-// ]
+const data = [
+  {
+    id : 1,
+    title : "Yumurta",
+    quantity : 10,
+    completed : true
+  },
+  {
+    id : 2,
+    title : "Ekmek",
+    quantity : 2,
+    completed : true
+  },
+  {
+    id : 3,
+    title : "Süt",
+    quantity : 1,
+    completed : false
+  },
+  {
+    id : 4,
+    title : "Et",
+    quantity : 1,
+    completed : true
+  },
+  {
+    id : 5,
+    title : "Zeytin",
+    quantity : 1,
+    completed : false
+  },
+
+]
 
 function App() {
-
-  const [list, setList] = useState([])
+  
+  const [list, setList] = useState(data)
+  // const [list, setList] = useState([])
   function handleAddItem(listItem) {
     setList((list) => [...list,listItem])
+  }
+
+  function handleDeleteItem(id) {
+    setList(list => list.filter(item => item.id !== id))
   }
 
   return (
    <div className="app">
       <Header />
       <Form onAddListItem = {handleAddItem} />
-      <List list={list}/>
+      <List list={list} onDeleteItem={handleDeleteItem}/>
       <Summary />
    </div>
   )
@@ -59,7 +64,7 @@ function Header() {
 
 //LİSTEYE ÜRÜN EKLEME/ SİLME
 function Form({onAddListItem}) {
-  
+
   const [title, setTitle] = useState("");
   const [quantity, setQuantity] = useState(1);
 
@@ -70,7 +75,7 @@ function Form({onAddListItem}) {
     setTitle('');
     setQuantity(1);
     onAddListItem(item)
-    
+
   }
 
   return (
@@ -89,21 +94,30 @@ function Form({onAddListItem}) {
   )
 }
 
-function List({list}) {
+function List({list, onDeleteItem}) {
   return (
-    <div className="list">
+    <>
+    {
+      list.length > 0 ? (
+         <div className="list">
       <ul>
-        {list.map((listItem,index)=>( <ListItem listItem={listItem} key={index}/> ))}
+        {list.map((listItem,index)=>( <ListItem listItem={listItem} key={index} onDeleteItem={onDeleteItem}/> ))}
       </ul>
     </div>
+      ) : (
+        <p>Sepetinizde ürün bulunmamaktadır.</p>
+      )
+    }
+    </>
+   
   )
 }
 
-function ListItem({listItem}) {
+function ListItem({listItem, onDeleteItem}) {
   return (
     <li>
       <span style={ listItem.completed ? {textDecoration : 'line-through'} : {textDecoration : 'none'} }> {listItem.quantity} {listItem.title}</span>
-      <button>X</button>
+      <button onClick={() => onDeleteItem(listItem.id)}>X</button>
     </li>
   )
 }
