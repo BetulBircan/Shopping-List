@@ -55,7 +55,7 @@ function App() {
       <Header />
       <Form onAddListItem = {handleAddItem} />
       <List list={list} onDeleteItem={handleDeleteItem} onUpdateItem = {handleUpdateItem}/>
-      <Summary />
+      <Summary list = {list}/>
    </div>
   )
 }
@@ -109,7 +109,10 @@ function List({list, onDeleteItem, onUpdateItem}) {
       </ul>
     </div>
       ) : (
-        <p>Sepetinizde ürün bulunmamaktadır.</p>
+        <div className="list">
+           <p>Sepetinizde ürün bulunmamaktadır.</p>
+        </div>
+       
       )
     }
     </>
@@ -127,10 +130,21 @@ function ListItem({listItem, onDeleteItem, onUpdateItem}) {
   )
 }
 
-function Summary() {
+function Summary({list}) {
+  if(list.length === 0) {
+    return (
+      <footer className="summary">Alışveriş listenizi hazırlamaya başlayabilirsiniz</footer>
+    )
+  }
+  const listCount = list.length;
+  const completedItemsCount = list.filter(listItem => listItem.completed).length
   return (
     <footer className="summary">
-      <p>Alışveriş sepetinizde 10 ürün bulunmaktadır.</p>
+      {listCount === completedItemsCount ? 
+      <p>Alışverişi tamamladınız . 😍</p> :
+       <p>Alışveriş sepetinizde {listCount} üründen {completedItemsCount} tanesini aldınız.</p>
+      }
+     
     </footer>
   )
 }
