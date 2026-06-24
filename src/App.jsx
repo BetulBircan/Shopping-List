@@ -46,11 +46,15 @@ function App() {
     setList(list => list.filter(item => item.id !== id))
   }
 
+  function handleUpdateItem(id) {
+    setList(list => list.map(listItem => listItem.id == id ? {...listItem, completed: !listItem.completed} : listItem))
+  }
+
   return (
    <div className="app">
       <Header />
       <Form onAddListItem = {handleAddItem} />
-      <List list={list} onDeleteItem={handleDeleteItem}/>
+      <List list={list} onDeleteItem={handleDeleteItem} onUpdateItem = {handleUpdateItem}/>
       <Summary />
    </div>
   )
@@ -94,14 +98,14 @@ function Form({onAddListItem}) {
   )
 }
 
-function List({list, onDeleteItem}) {
+function List({list, onDeleteItem, onUpdateItem}) {
   return (
     <>
     {
       list.length > 0 ? (
          <div className="list">
       <ul>
-        {list.map((listItem,index)=>( <ListItem listItem={listItem} key={index} onDeleteItem={onDeleteItem}/> ))}
+        {list.map((listItem,index)=>( <ListItem listItem={listItem} key={index} onDeleteItem={onDeleteItem} onUpdateItem={onUpdateItem}/> ))}
       </ul>
     </div>
       ) : (
@@ -113,9 +117,10 @@ function List({list, onDeleteItem}) {
   )
 }
 
-function ListItem({listItem, onDeleteItem}) {
+function ListItem({listItem, onDeleteItem, onUpdateItem}) {
   return (
     <li>
+      <input type="checkbox" checked={listItem.completed} onChange={() => onUpdateItem(listItem.id)}/>
       <span style={ listItem.completed ? {textDecoration : 'line-through'} : {textDecoration : 'none'} }> {listItem.quantity} {listItem.title}</span>
       <button onClick={() => onDeleteItem(listItem.id)}>X</button>
     </li>
